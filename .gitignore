@@ -1,0 +1,5 @@
+.venv
+bot.db
+*.session
+test.py
+__pycache__
