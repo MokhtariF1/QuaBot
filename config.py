@@ -3,6 +3,7 @@ api_id = 28482138
 api_hash = "cdcd9c0f111f85feaafac50d1bc3d6a5"
 proxy = False
 proxy_address = ("socks5", "127.0.0.1", 2080)
+admins = [5415792594]
 
 
 bot_text = {
@@ -24,7 +25,12 @@ bot_text = {
     "male": "مرد",
     "female": "زن",
     "qua_number": 'عدد شانس شما: {num}',
-    "information": "اطلاعات دریافت شده:\nتاریخ تولد: {date}\nجنسیت: {gender}"
+    "information": "اطلاعات دریافت شده:\nتاریخ تولد: {date}\nجنسیت: {gender}",
+    "panel": "پنل ادمین",
+    "show_users": "مشاهده کاربران",
+    "select": "لطفا یک دکمه را انتخاب کنید:",
+    "back": "بازگشت",
+    "not_users": "کاربری پیدا نشد!",
 }
 
 

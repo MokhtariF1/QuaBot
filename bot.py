@@ -17,43 +17,68 @@ bot_text = config.bot_text
 async def new_mssg(event):
     user_id = event.sender_id
     find_user = cur.execute(f"SELECT * FROM users WHERE user_id = {user_id}").fetchone()
-    if find_user is None:
-        async with bot.conversation(user_id, timeout=1000) as conv:
-            await conv.send_message(bot_text["not_start"])
-            btn = [
-                Button.request_phone(bot_text["share_phone"], resize=True)
+    text = event.raw_text
+    if text == bot_text["panel"]:
+        if user_id in config.admins:
+            keys = [
+                [
+                    Button.text(bot_text["show_users"], resize=1)
+                ],
+                [
+                    Button.text(bot_text["back"])
+                ],
             ]
-            await conv.send_message(bot_text["enter_phone"], buttons=btn)
-            response = await conv.get_response()
-            phone_number = None
-            if type(response.media) == types.MessageMediaContact:
-                phone_number = response.media.phone_number
-                await conv.send_message(bot_text["saved"])
+            await event.reply(bot_text["select"], buttons=keys)
+    elif text == bot_text["show_users"]:
+        if user_id in config.admins:
+            text = "لیست کاربران: \n"
+            find_users = cur.execute("SELECT * FROM users").fetchall()
+            if len(find_users) == 0:
+                await event.reply(bot_text["not_users"])
             else:
-                await conv.send_message(bot_text["send_phone"])
-                return
-            await conv.send_message(bot_text["enter_name"])
-            name = await conv.get_response()
-            name = name.raw_text
-            await conv.send_message(bot_text["saved"])
-            await conv.send_message(bot_text["enter_city"].format(name=name))
-            city = await conv.get_response()
-            city = city.raw_text
-            await conv.send_message(bot_text["saved"])
-            cur.execute(f"INSERT INTO users VALUES ({user_id}, '{phone_number}', '{name}', '{city}')")
-            db.commit()
+                for user in find_users:
+                    user_text = "آیدی عددی: {num_id}\nنام: {name}\nشهر: {city}\nشماره: {phone}"
+                    user_text = user_text.format(num_id=user[0], name=user[2], city=user[3], phone=user[1])
+                    text += user_text + "\n" + "💖➖➖➖➖➖➖➖💖"
+                await event.reply(text)
+    else:
+        if find_user is None:
+            async with bot.conversation(user_id, timeout=1000) as conv:
+                await conv.send_message(bot_text["not_start"])
+                btn = [
+                    Button.request_phone(bot_text["share_phone"], resize=True)
+                ]
+                await conv.send_message(bot_text["enter_phone"], buttons=btn)
+                response = await conv.get_response()
+                phone_number = None
+                if type(response.media) == types.MessageMediaContact:
+                    phone_number = response.media.phone_number
+                    await conv.send_message(bot_text["saved"])
+                else:
+                    await conv.send_message(bot_text["send_phone"])
+                    return
+                await conv.send_message(bot_text["enter_name"])
+                name = await conv.get_response()
+                name = name.raw_text
+                await conv.send_message(bot_text["saved"])
+                await conv.send_message(bot_text["enter_city"].format(name=name))
+                city = await conv.get_response()
+                city = city.raw_text
+                await conv.send_message(bot_text["saved"])
+                cur.execute(f"INSERT INTO users VALUES ({user_id}, '{phone_number}', '{name}', '{city}')")
+                db.commit()
+                start_buttons = [
+                    Button.inline(bot_text["qua"], b'qua'),
+                    Button.inline(bot_text["zoo"], b'zoo')
+                ]
+                await conv.send_message(bot_text["start"].format(city=city, name=name), buttons=start_buttons)
+        else:
             start_buttons = [
                 Button.inline(bot_text["qua"], b'qua'),
                 Button.inline(bot_text["zoo"], b'zoo')
             ]
-            await conv.send_message(bot_text["start"].format(city=city, name=name), buttons=start_buttons)
-    else:
-        start_buttons = [
-            Button.inline(bot_text["qua"], b'qua'),
-            Button.inline(bot_text["zoo"], b'zoo')
-        ]
-        city, name = find_user[3], find_user[2]
-        await event.reply(bot_text["start"].format(city=city, name=name), buttons=start_buttons)
+            city, name = find_user[3], find_user[2]
+            await event.reply(bot_text["start"].format(city=city, name=name), buttons=start_buttons)
 @bot.on(events.CallbackQuery(data=b'qua'))
 async def qua(event):
     user_id = event.sender_id
