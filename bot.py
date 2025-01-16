@@ -121,6 +121,18 @@ async def qua(event):
         qua = await helper.qua(year, month, day, gender)
         await conv.send_message(bot_text["qua_number"].format(num=qua), file=f"images/qua/{qua}.jpg")
         await conv.send_message(f"توضیحات عدد شانس {qua}", file=f"sounds/{qua}.mp3")
+        await conv.send_message(bot_text["connect"])
+        start_buttons = [
+            [
+                Button.inline(bot_text["qua"], b'qua'),
+                Button.inline(bot_text["zoo"], b'zoo')
+            ]
+        ]
+        if user_id in config.admins:
+            start_buttons.append([Button.inline(bot_text["panel"], b'panel')])
+        find_user = cur.execute(f"SELECT * FROM users WHERE user_id={user_id}")
+        city, name = find_user[3], find_user[2]
+        await event.reply(bot_text["start"].format(city=city, name=name), buttons=start_buttons)
 @bot.on(events.CallbackQuery(data=b'zoo'))
 async def zoo(event):
     user_id = event.sender_id
@@ -166,6 +178,18 @@ async def zoo(event):
         name, about, image = await helper.zoo(year, month, day)
         await conv.send_message(f"حیوان سال تولد شما {name} است!", file=image)        
         await conv.send_message(about)
+        await conv.send_message(bot_text["connect"])
+        start_buttons = [
+            [
+                Button.inline(bot_text["qua"], b'qua'),
+                Button.inline(bot_text["zoo"], b'zoo')
+            ]
+        ]
+        if user_id in config.admins:
+            start_buttons.append([Button.inline(bot_text["panel"], b'panel')])
+        find_user = cur.execute(f"SELECT * FROM users WHERE user_id={user_id}")
+        city, name = find_user[3], find_user[2]
+        await event.reply(bot_text["start"].format(city=city, name=name), buttons=start_buttons)
 @bot.on(events.CallbackQuery(data=b'panel'))
 async def panel(event):
     user_id = event.sender_id

@@ -3,7 +3,7 @@ api_id = 28482138
 api_hash = "cdcd9c0f111f85feaafac50d1bc3d6a5"
 proxy = False
 proxy_address = ("socks5", "127.0.0.1", 2080)
-admins = [5415792594]
+admins = [5415792594, 6012850907]
 
 
 bot_text = {
@@ -31,6 +31,7 @@ bot_text = {
     "select": "لطفا یک دکمه را انتخاب کنید:",
     "back": "بازگشت",
     "not_users": "کاربری پیدا نشد!",
+    "connect": "لطفا برای دریافت اطلاعات بیشتر با شماره زیر در ارتباط باشید:\n۰۹۰۲۱۹۹۰۲۹۳"
 }
 
 
