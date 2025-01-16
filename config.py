@@ -1,7 +1,7 @@
 bot_token = "6383493043:AAG3I_ZMgdNQw97BR78r_EtBH55xtI5frLY"
 api_id = 28482138
 api_hash = "cdcd9c0f111f85feaafac50d1bc3d6a5"
-proxy = True
+proxy = False
 proxy_address = ("socks5", "127.0.0.1", 2080)
 
 

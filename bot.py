@@ -111,6 +111,7 @@ async def qua(event):
         await event.reply(bot_text["information"].format(date=birth, gender=bot_text[gender]))
         qua = await helper.qua(year, month, day, gender)
         await conv.send_message(bot_text["qua_number"].format(num=qua), file=f"images/qua/{qua}.jpg")
+        await conv.send_message(f"توضیحات عدد شانس {qua}", file=f"sounds/{qua}")
 @bot.on(events.CallbackQuery(data=b'zoo'))
 async def zoo(event):
     user_id = event.sender_id
