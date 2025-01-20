@@ -18,14 +18,16 @@ async def qua(year, month, day, gender):
             sum_year_two += 5
             if len(str(sum_year_two)) == 2:
                 sum_year_two = int(str(sum_year_two)[0]) + int(str(sum_year_two)[1])
+            if sum_year_two == 5:
+                return 8
             return sum_year_two
         else:
             sum_year_two = int(str(year)[2]) + int(str(year)[3])
             if len(str(sum_year_two)) == 2:
                 sum_year_two = int(str(sum_year_two)[0]) + int(str(sum_year_two)[1])
+            sum_year_two = 10 - sum_year_two
             if sum_year_two == 5:
                 return 2
-            sum_year_two = 10 - sum_year_two
             return sum_year_two
     else:
         if gender == "female":
@@ -39,6 +41,8 @@ async def qua(year, month, day, gender):
                 sum_year_two = int(str(sum_year_two)[0]) + int(str(sum_year_two)[1])
             if sum_year_two == 10:
                 return 1
+            if sum_year_two == 5:
+                return 8
             return sum_year_two
         else:
             sum_year_two = int(str(year)[2]) + int(str(year)[3])
@@ -49,6 +53,8 @@ async def qua(year, month, day, gender):
             sum_year_two = 9 - sum_year_two
             if sum_year_two == 0:
                 return 9
+            if sum_year_two == 5:
+                return 2
             return sum_year_two
         
 
